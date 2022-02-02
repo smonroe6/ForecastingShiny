@@ -1,8 +1,10 @@
 library(shiny)
+library(shinydashboard)
+library(shinyWidgets)
 
 shinyServer(function(input, output) {
   output$display <- renderText(
-    if (data == "Buy/Make") {
+    if (input$forecast == "Buy/Make") {
       UNITS <- 15000
       FC <- 25000
       VC <- 5
