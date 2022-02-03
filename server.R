@@ -1,24 +1,10 @@
 library(shiny)
+library(shinydashboard)
+library(shinyWidgets)
 
 shinyServer(function(input, output) {
-  output$display <- renderText(
-    if (data == "Buy/Make") {
-      UNITS <- 15000
-      FC <- 25000
-      VC <- 5
-      MAKE_COST_REG <- FC + (VC * UNITS)
-
-      PRICE <- 7
-      BUY_COST_REG <- PRICE * UNITS
-
-      if (MAKE_COST_REG > BUY_COST_REG) {
-        print("Buy")
-      } else if (MAKE_COST_REG < BUY_COST_REG) {
-        print("Make")
-      } else {
-        print("Either Works")
-      }
-    } else if (input$forecast == "Moving Average") {
+  output$display <- renderTable(
+    if (input$forecast == "Moving Average") {
       TIME_PERIOD <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)
       ACTUAL <- c(1600, 2200, 2000, 1600, 2500, 3500, 3300, 3200, 3900, 4700, 4300, 4400, NA)
       FORECAST <- c()
@@ -45,9 +31,8 @@ shinyServer(function(input, output) {
       Error <- data.frame(AbsoluteDeviation, Square, Percent)
       FORECASTdf[, 4:6] <- Error
 
-      output$display <- renderTable({
-        FORECASTdf
-      })
+      print(FORECASTdf)
+
     } else if (input$forecast == "Weighted Moving") {
       TIME_PERIOD <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)
       ACTUAL <- c(1600, 2200, 2000, 1600, 2500, 3500, 3300, 3200, 3900, 4700, 4300, 4400, NA)
@@ -76,9 +61,8 @@ shinyServer(function(input, output) {
       Error <- data.frame(AbsoluteDeviation, Square, Percent)
       FORECASTdf[, 4:6] <- Error
 
-      output$display <- renderTable({
-        FORECASTdf
-      })
+      print(FORECASTdf)
+
     } else if (input$forecast == "Exponential Smoothing") {
       TIME_PERIOD <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)
       ACTUAL <- c(1600, 2200, 2000, 1600, 2500, 3500, 3300, 3200, 3900, 4700, 4300, 4400, NA)
@@ -104,12 +88,12 @@ shinyServer(function(input, output) {
         Percent[i] <- ((ACTUAL[i] - FORECAST[i]) / ACTUAL[i]) * 100
       }
 
+
+
       Error <- data.frame(AbsoluteDeviation, Square, Percent)
       FORECASTdf[, 4:6] <- Error
 
-      output$display <- renderTable({
-        FORECASTdf
-      })
+      print(FORECASTdf)
     }
   )
 })

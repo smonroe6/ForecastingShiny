@@ -1,4 +1,6 @@
 library(shiny)
+library(shinydashboard)
+library(shinyWidgets)
 
 shinyUI(fluidPage(
 
@@ -10,12 +12,12 @@ shinyUI(fluidPage(
           pickerInput(
             inputId = "forecast",
             label = "Forecast Model", 
-            choices = c("Buy/Make", "Moving Average", "Weighted Moving", "Exponential Smoothing")
+            choices = c("Moving Average", "Weighted Moving", "Exponential Smoothing")
           )
         ),
 
         mainPanel(
-            tableOutput("display")
+            uiOutput("display")
         )
     )
 ))
